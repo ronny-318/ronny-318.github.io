@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /*common*/
 html * {
     margin: 0;
@@ -10,30 +12,3 @@ html * {
 /*index.html*/
 
 /*checklist.html*/
-header {
-    background-color: #f48eff;
-}
-header * {
-    display: inline-block;
-}
-.profile {
-    width: 60px;
-    height: 60px;
-    border-radius: 100%;
-    background-image: url('../images/profile.png');
-    background-size: cover;
-    background-position: center;
-    overflow: hidden;
-}
-.list {
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-}
-.list div {
-    width: 600px;
-    height: 600px;
-    background-color:aqua;
-    text-align: left;
-    padding: 0 20px;
-}

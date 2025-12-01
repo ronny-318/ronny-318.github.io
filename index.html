@@ -5,21 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
     <link href="styles/style.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
-    <header>
-        <h1>Main Page of my Portfolio!</h1>
-    </header>
-    <main>
-        <a href="pages/checklist.html">Example of Checklist</a>
-        <div>
-            <h1>안녕하세요, 정유진입니다.</h1>
-            <p>저는 즉각적인 피드백을 좋아하며 일에서 의미를 찾지 못하면 쉽게 지치는 경향이 있습니다.<br>그래서 누구보다 빠르게 남들과는 다르게 일에서 '나'를 계속 찾아가는 중입니다.</p>
-        </div>
-    </main>
-    <footer>
+<body class="bg-gray-50 text-gray-800">
 
-    </footer>
+  <!-- 헤더 -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">My Portfolio</h1>
+      <nav>
+        <ul class="hidden md:flex space-x-6 font-medium">
+          <li><a href="#about" class="hover:text-blue-600">소개</a></li>
+          <li><a href="#projects" class="hover:text-blue-600">프로젝트</a></li>
+          <li><a href="#contact" class="hover:text-blue-600">연락처</a></li>
+        </ul>
+        <!-- 모바일 햄버거 메뉴 토글은 JS 필요 -->
+      </nav>
+    </div>
+  </header>
+
+  <!-- 메인 콘텐츠 -->
+  <main class="container mx-auto px-4 py-10">
+    
+    <!-- 소개 섹션 -->
+    <section id="about" class="mb-16">
+      <h2 class="text-3xl font-semibold mb-4">소개</h2>
+      <p class="max-w-3xl text-lg leading-relaxed">
+        안녕하세요! 저는 웹 개발자입니다. 언제나 최신 기술을 배우고 프로젝트에 적용하는 것을 즐깁니다.
+      </p>
+    </section>
+
+    <!-- 프로젝트 섹션 -->
+    <section id="projects" class="mb-16">
+      <h2 class="text-3xl font-semibold mb-8">프로젝트</h2>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        
+        <!-- 프로젝트 카드 예시 -->
+        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">프로젝트 1</h3>
+          <p class="text-gray-600">반응형 웹사이트 개발 및 유지보수</p>
+          <a href="#" class="text-blue-600 hover:underline mt-4 inline-block">자세히 보기</a>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">프로젝트 2</h3>
+          <p class="text-gray-600">Node.js 기반 API 개발</p>
+          <a href="#" class="text-blue-600 hover:underline mt-4 inline-block">자세히 보기</a>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">프로젝트 3</h3>
+          <p class="text-gray-600">머신러닝 모델 학습 및 시각화</p>
+          <a href="#" class="text-blue-600 hover:underline mt-4 inline-block">자세히 보기</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 연락처 섹션 -->
+    <section id="contact" class="mb-16">
+      <h2 class="text-3xl font-semibold mb-4">연락처</h2>
+      <form class="max-w-md">
+        <label for="name" class="block mb-2 font-medium">이름</label>
+        <input type="text" id="name" class="w-full p-2 mb-4 border rounded-md" placeholder="이름을 입력하세요"/>
+
+        <label for="email" class="block mb-2 font-medium">이메일</label>
+        <input type="email" id="email" class="w-full p-2 mb-4 border rounded-md" placeholder="이메일을 입력하세요"/>
+
+        <label for="message" class="block mb-2 font-medium">메시지</label>
+        <textarea id="message" class="w-full p-2 mb-4 border rounded-md" rows="4" placeholder="메시지를 입력하세요"></textarea>
+
+        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">전송</button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="bg-white border-t py-6 text-center text-gray-600 text-sm">
+    &copy; 2025 My Portfolio. All rights reserved.
+  </footer>
+
+</body>
+</html>
+
     <script src="scripts/main.js"></script>
 </body>
 </html>
