@@ -3,61 +3,138 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ADHD 커뮤니티</title>
+    <title>ADHD Focus Timer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+      @layer components {
+        .step-dot {
+          @apply w-10 h-10 rounded-full bg-white border-4 border-gray-200 flex items-center justify-center font-bold text-gray-400 z-10 transition-all duration-500 relative;
+        }
+        /* 현재 진행 중: 빨간색 테두리와 연한 빨강 후광 */
+        .active-step {
+          @apply border-red-500 text-red-500 ring-4 ring-red-100 scale-110;
+        }
+        /* 완료 상태: 빨간색 배경과 그림자 */
+        .completed-step {
+          @apply bg-red-500 border-red-500 text-white shadow-md shadow-red-200;
+        }
+      }
+    </style>
   </head>
-  <body class="bg-gray-100 h-screen flex">
-    <nav class="w-20 lg:w-64 bg-white border-r flex-shrink-0 flex flex-col">
-      <div class="p-6 text-xl font-bold text-red-500">Focus</div>
-      <div class="flex-1 px-4 space-y-2">
+  <body class="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
+    <nav
+      class="w-full lg:w-64 bg-white border-b lg:border-r flex-shrink-0 flex lg:flex-col items-center lg:items-stretch justify-between lg:justify-start p-4 lg:p-6 sticky top-0 z-50"
+    >
+      <div class="text-xl font-bold text-red-500">Focus</div>
+
+      <button
+        class="lg:hidden p-2 text-gray-600 focus:outline-none"
+        onclick="toggleMenu()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          />
+        </svg>
+      </button>
+
+      <div
+        id="nav-menu"
+        class="hidden lg:flex flex-col mt-6 space-y-2 w-full absolute lg:relative top-full left-0 bg-white border-b lg:border-none p-4 lg:p-0"
+      >
         <a
           href="#"
-          class="block p-3 bg-red-50 text-red-600 rounded-lg font-medium overflow-x-hidden"
+          class="block p-3 bg-red-50 text-red-600 rounded-lg font-medium"
           >dashboard</a
         >
-        <a
-          href="#"
-          class="block p-3 text-gray-500 hover:bg-gray-50 rounded-lg overflow-x-hidden"
+        <a href="#" class="block p-3 text-gray-500 hover:bg-gray-50 rounded-lg"
           >community</a
         >
       </div>
     </nav>
 
-    <main class="flex-1 p-8 flex flex-col items-center justify-center">
-      <div class="w-64 bg-gray-200 rounded-full h-2.5 mb-6 overflow-hidden">
-        <div
-          id="progress-bar"
-          class="bg-red-500 h-2.5 rounded-full transition-all duration-500"
-          style="width: 0%"
-        ></div>
-      </div>
-
+    <main
+      id="main-container"
+      class="flex-1 p-4 lg:p-8 flex flex-col items-center justify-center min-h-[70vh]"
+    >
       <div
-        class="bg-white p-12 rounded-3xl shadow-xl text-center w-full max-w-md"
+        id="timer-card"
+        class="bg-white p-6 lg:p-12 rounded-3xl shadow-xl text-center w-full max-w-md relative"
       >
-        <h2 id="status" class="text-gray-500 mb-4 font-medium italic">
-          집중할 시간!
-        </h2>
-        <div id="timer" class="text-8xl font-black text-gray-800 mb-8">
+        <button
+          onclick="openPiP()"
+          class="absolute top-5 right-5 text-gray-300 hover:text-red-500 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 11a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2h12a2 2 0 012 2v6zM11 19l-1 1v-1m2 1l1-1v-1m-5 4h7a2 2 0 002-2v-5a2 2 0 00-2-2H5a2 2 0 00-2 2v5a2 2 0 002 2z"
+            />
+          </svg>
+        </button>
+
+        <div
+          class="flex items-center justify-between w-full mb-10 relative px-5"
+        >
+          <div
+            class="absolute top-1/2 left-5 right-5 h-1 bg-gray-200 -translate-y-1/2 z-0"
+          ></div>
+
+          <div
+            id="progress-line"
+            class="absolute top-1/2 left-5 h-1 bg-red-500 -translate-y-1/2 z-0 transition-all duration-700"
+            style="width: 0%"
+          ></div>
+
+          <div id="step-1" class="step-dot active-step">1</div>
+          <div id="step-2" class="step-dot">2</div>
+          <div id="step-3" class="step-dot">3</div>
+          <div id="step-4" class="step-dot">4</div>
+        </div>
+
+        <h2 id="status" class="text-gray-400 mb-2 font-medium">집중할 시간!</h2>
+        <div
+          id="timer"
+          class="text-7xl lg:text-8xl font-black text-gray-800 mb-8 tracking-tighter"
+        >
           25:00
         </div>
+
         <button
           id="start-pause-btn"
           onclick="startTimer()"
-          class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-full font-bold transition"
+          class="bg-red-500 hover:bg-red-600 text-white px-12 py-3 rounded-full font-bold transition w-full shadow-lg"
         >
           시작
         </button>
-        <div class="mt-6 w-full max-w-sm">
+
+        <div id="task-area" class="mt-8 border-t pt-8">
           <input
             type="text"
             id="task-input"
             placeholder="지금 무엇을 끝냈나요?"
-            class="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-400"
+            class="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm"
           />
           <button
             onclick="finishTaskEarly()"
-            class="w-full mt-2 bg-gray-800 text-white p-3 rounded-xl font-bold hover:bg-black transition"
+            class="w-full mt-2 bg-gray-800 text-white p-3 rounded-xl font-bold hover:bg-black transition text-sm"
           >
             기록하고 다음으로
           </button>
@@ -65,20 +142,59 @@
       </div>
     </main>
 
-    <aside class="w-80 bg-white border-l p-6 overflow-y-auto">
-      <h3 class="text-lg font-bold mb-6 flex items-center">
-        실행 로그<span
+    <aside
+      class="w-full lg:w-80 bg-white border-t lg:border-l p-6 overflow-y-auto"
+    >
+      <h3 class="text-lg font-bold mb-6 flex items-center justify-between">
+        실행 로그
+        <span
           id="log-count"
-          class="ml-2 text-xs bg-gray-100 px-2 py-1 rounded text-gray-500"
+          class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-500"
           >0</span
         >
       </h3>
       <ul id="log-list" class="space-y-4">
-        <p id="empty-msg" class="text-sm text-gray-400">
-          아직 기록이 없습니다.
+        <p id="empty-msg" class="text-sm text-gray-400 text-center py-10">
+          아직 기록이 없습니다. 기록하고 계속하기 버튼을 눌러보세요!
         </p>
       </ul>
     </aside>
+
+    <div
+      id="custom-modal"
+      class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]"
+    >
+      <div
+        class="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center"
+      >
+        <div class="text-4xl mb-4">☕</div>
+        <h3 class="text-xl font-bold mb-2">기록 완료!</h3>
+        <p id="modal-msg" class="text-gray-500 mb-6">지금 바로 휴식할까요?</p>
+        <div class="flex space-x-3">
+          <button
+            id="modal-yes"
+            class="flex-1 bg-blue-500 text-white py-3 rounded-xl font-bold hover:bg-blue-600 transition"
+          >
+            네
+          </button>
+          <button
+            id="modal-no"
+            class="flex-1 bg-gray-100 text-gray-600 py-3 rounded-xl font-bold hover:bg-gray-200 transition"
+          >
+            아니오
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("nav-menu");
+        menu.classList.toggle("hidden");
+      }
+    </script>
+    <script src="scripts/constants.js"></script>
+    <script src="scripts/ui.js"></script>
     <script src="scripts/main.js"></script>
   </body>
 </html>
